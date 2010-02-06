@@ -38,7 +38,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 	public void testCorrectTransitionIsFoundForUser() throws Exception {
 
 		// configure the engine
-		WorkFlowEngine wf = getBasicFlow();
+		WorkFlowEngine wf = getInitializedEmptyFlow();
 
 		Transition t1 = new Transition(START, NEW, SAVE, USER);
 		Transition t2 = new Transition(START, NEW, APPROVE, APPROVER);
@@ -113,7 +113,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 
 	public void testNonExistantPathThrowsException() throws Exception {
 		// configure the engine
-		WorkFlowEngine wf = getBasicFlow();
+		WorkFlowEngine wf = getInitializedEmptyFlow();
 		wf.setApplicationContext(unitTestContext);
 		Transition t1 = new Transition(START, NEW, SAVE, USER);
 		Transition t2 = new Transition(START, CANCELLED, APPROVE, APPROVER);
@@ -130,7 +130,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 
 	public void testNonExistantPathForTemporaryRoleThrowsException() throws Exception {
 		// configure the engine
-		WorkFlowEngine wf = getBasicFlow();
+		WorkFlowEngine wf = getInitializedEmptyFlow();
 		wf.setApplicationContext(unitTestContext);
 		Transition t1 = new Transition(START, NEW, SAVE, USER);
 		Transition t2 = new Transition(START, CANCELLED, APPROVE, APPROVER);
@@ -147,7 +147,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 
 	public void testNullRoleThrowsException() throws Exception {
 		// configure the engine
-		WorkFlowEngine wf = getBasicFlow();
+		WorkFlowEngine wf = getInitializedEmptyFlow();
 
 		Transition t1 = new Transition(START, NEW, SAVE, USER);
 		Transition t2 = new Transition(START, CANCELLED, APPROVE, APPROVER);
@@ -166,7 +166,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		Callback mock = getCallback();
 
 		// configure flow
-		WorkFlowEngine flow = getBasicFlow();
+		WorkFlowEngine flow = getInitializedEmptyFlow();
 		flow.setApplicationContext(unitTestContext);
 		flow.addTransition(new Transition(START, NEW, SAVE, USER));
 		flow.whenMovesFrom(request).to(SAVE).thenExecute(mock);
@@ -179,7 +179,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 
 	public void testNullEntityThrowsException() throws Exception {
 		try {
-			getBasicFlow().entity(null).to(SAVE);
+			getInitializedEmptyFlow().entity(null).to(SAVE);
 			fail("Must throw IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// pass
@@ -187,10 +187,10 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 	}
 
 	public void testSubFlowIsImportedCorrectly() throws Exception {
-		WorkFlowEngine subflow = getBasicFlow();
+		WorkFlowEngine subflow = getInitializedEmptyFlow();
 		subflow.addTransition(new Transition(MockState.APPROVED, MockState.CANCELLED, MockButton.CANCEL, MockRole.USER));
 
-		WorkFlowEngine flow = getBasicFlow();
+		WorkFlowEngine flow = getInitializedEmptyFlow();
 		flow.setApplicationContext(unitTestContext);
 		flow.addTransition(new Transition(MockState.START, MockState.NEW, MockButton.APPROVE, MockRole.USER));
 		flow.importSubFlow(subflow, MockState.NEW, MockButton.APPROVE, MockRole.USER);
@@ -207,7 +207,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 	}
 
 	public void testCalculatesFinalStatesCorrectly() throws Exception {
-		WorkFlowEngine flow = getBasicFlow();
+		WorkFlowEngine flow = getInitializedEmptyFlow();
 		flow.addTransition(new Transition(MockState.START, MockState.NEW, MockButton.SAVE, MockRole.USER));
 
 		// there is one final state: NEW
@@ -223,7 +223,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 	}
 
 	public void testRecursionFromCallback() throws Exception {
-		final WorkFlowEngine flow = getBasicFlow();
+		final WorkFlowEngine flow = getInitializedEmptyFlow();
 		flow.setApplicationContext(unitTestContext);
 		flow.addTransition(new Transition(MockState.START, MockState.APPROVED, MockButton.APPROVE, MockRole.SYSTEM));
 		Transition t = new Transition(MockState.START, MockState.NEW, MockButton.SAVE, MockRole.USER);
@@ -241,7 +241,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		verify(request).setState(MockState.APPROVED);
 	}
 
-	protected WorkFlowEngine getBasicFlow() {
+	protected WorkFlowEngine getInitializedEmptyFlow() {
 		when(roleMapper.getRole(request)).thenReturn(USER);
 		WorkFlowEngine wf = new WorkFlowEngine();
 		wf.setMapper(roleMapper);
