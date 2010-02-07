@@ -1,8 +1,8 @@
 package net.n0ha.sst.support;
 
-import net.n0ha.sst.FlowEntity;
-import net.n0ha.sst.Role;
-import net.n0ha.sst.User;
+import net.n0ha.sst.model.FlowEntity;
+import net.n0ha.sst.model.Role;
+import net.n0ha.sst.model.User;
 
 public interface UserToRoleMapper {
 

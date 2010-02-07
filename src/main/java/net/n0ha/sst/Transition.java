@@ -3,6 +3,10 @@ package net.n0ha.sst;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.Role;
+import net.n0ha.sst.model.State;
+
 import org.springframework.util.ClassUtils;
 
 public class Transition {

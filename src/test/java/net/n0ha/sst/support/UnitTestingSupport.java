@@ -7,8 +7,8 @@ import static org.mockito.Mockito.when;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import net.n0ha.sst.Callback;
-import net.n0ha.sst.FlowEntity;
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
 
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.support.StaticApplicationContext;

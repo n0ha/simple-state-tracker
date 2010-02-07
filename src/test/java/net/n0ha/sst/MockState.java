@@ -1,5 +1,7 @@
 package net.n0ha.sst;
 
+import net.n0ha.sst.model.State;
+
 public enum MockState implements State {
 
 	START(0), NEW(1), PROCESSED(6, true), CANCELLED(3, true), APPROVED(4), UNVERIFIED(10, true);

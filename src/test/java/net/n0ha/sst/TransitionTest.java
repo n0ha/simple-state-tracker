@@ -6,6 +6,8 @@ import static net.n0ha.sst.MockState.START;
 
 import java.util.Map;
 
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.support.UnitTestingSupport;
 
 public class TransitionTest extends UnitTestingSupport {

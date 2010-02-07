@@ -2,8 +2,8 @@ package net.n0ha.sst.support;
 
 import java.util.Map;
 
-import net.n0ha.sst.Callback;
-import net.n0ha.sst.FlowEntity;
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
 
 public class SpringConfiguredCallback implements Callback {
 

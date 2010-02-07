@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.n0ha.sst.Callback;
 import net.n0ha.sst.ExecutionFailedException;
-import net.n0ha.sst.FlowEntity;
-import net.n0ha.sst.FlowEntityImpl;
 import net.n0ha.sst.MockRole;
 import net.n0ha.sst.MockState;
 import net.n0ha.sst.Transition;
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
+import net.n0ha.sst.model.FlowEntityImpl;
 
 import org.mockito.InOrder;
 

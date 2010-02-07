@@ -12,6 +12,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.support.UnitTestingSupport;
 import net.n0ha.sst.support.UserToRoleMapper;
 

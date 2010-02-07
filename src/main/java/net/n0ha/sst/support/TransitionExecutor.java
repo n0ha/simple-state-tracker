@@ -3,11 +3,11 @@ package net.n0ha.sst.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.n0ha.sst.Callback;
 import net.n0ha.sst.ExecutionFailedException;
-import net.n0ha.sst.FlowEntity;
-import net.n0ha.sst.State;
 import net.n0ha.sst.Transition;
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
+import net.n0ha.sst.model.State;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -23,17 +23,9 @@ public class TransitionExecutor implements ApplicationContextAware {
 
 	private ApplicationContext springContext;
 
-	//private AuditLogDao auditLogDao;
-
-	/*
-	public List<Transition> canMoveTo() {
-		return transitions.getTransitions();
-	}*/
+	private Map<State, Callback> onEnterCallbacks;
 
 	public TransitionExecutor() {
-		// springContext = new
-		// ClassPathXmlApplicationContext("classpath:spring/spring-container-config.xml");
-		// auditLogDao = (AuditLogDao) springContext.getBean("auditLogDao");
 	}
 
 	public TransitionExecutor withParams(Map<String, Object> params) {
@@ -45,6 +37,7 @@ public class TransitionExecutor implements ApplicationContextAware {
 		if (transitions.isEmpty()) {
 			throw new IllegalStateException("Cannot execute transition, no possible path found");
 		}
+
 		sanitizeParams();
 		return execute(transitions.to(state));
 	}
@@ -59,7 +52,11 @@ public class TransitionExecutor implements ApplicationContextAware {
 				return false;
 			}
 		}
+
 		flowEntity.setState(t.getToState());
+		if (onEnterCallbacks != null && onEnterCallbacks.containsKey(flowEntity.getState())) {
+			executeCallback(onEnterCallbacks.get(flowEntity.getState()));
+		}
 
 		return true;
 	}
@@ -97,5 +94,9 @@ public class TransitionExecutor implements ApplicationContextAware {
 		}
 
 		return "te: " + sb.toString();
+	}
+
+	public void setOnEnterCallbacks(Map<State, Callback> callbacks) {
+		this.onEnterCallbacks = callbacks;
 	}
 }

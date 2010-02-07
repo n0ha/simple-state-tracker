@@ -13,8 +13,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.n0ha.sst.FlowEntity;
 import net.n0ha.sst.Transition;
+import net.n0ha.sst.model.FlowEntity;
 
 import org.mockito.Mock;
 

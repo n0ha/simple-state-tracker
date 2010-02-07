@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.FlowEntity;
+import net.n0ha.sst.model.Role;
+import net.n0ha.sst.model.State;
 import net.n0ha.sst.support.TransitionExecutor;
 import net.n0ha.sst.support.TransitionMatcher;
 import net.n0ha.sst.support.UserToRoleMapper;
@@ -41,6 +45,7 @@ public class WorkFlowEngine implements ApplicationContextAware {
 		executor.setMatcher(getMatcher(entity).from(entity));
 		executor.setFlowEntity(entity);
 		executor.setApplicationContext(springContext);
+		executor.setOnEnterCallbacks(onEnterCallbacks);
 
 		return executor;
 	}
@@ -54,6 +59,7 @@ public class WorkFlowEngine implements ApplicationContextAware {
 		executor.setMatcher(getMatcher(entity).from(entity, role));
 		executor.setFlowEntity(entity);
 		executor.setApplicationContext(springContext);
+		executor.setOnEnterCallbacks(onEnterCallbacks);
 
 		return executor;
 	}
@@ -127,4 +133,16 @@ public class WorkFlowEngine implements ApplicationContextAware {
 	public void addOnEnterCallback(State state, Callback callback) {
 		onEnterCallbacks.put(state, callback);
 	}
+
+	public void submit(FlowEntity request, Map<String, Object> params) {
+		if (onSubmitCallbacks.containsKey(request.getState())) {
+			try {
+				State state = onSubmitCallbacks.get(request.getState()).next(request, params);
+				entity(request).to(state);
+			} catch (ExecutionFailedException e) {
+				// pass
+			}
+		}
+	}
+
 }
