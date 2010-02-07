@@ -3,7 +3,6 @@ package net.n0ha.sst.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.n0ha.sst.Button;
 import net.n0ha.sst.FlowEntity;
 import net.n0ha.sst.Role;
 import net.n0ha.sst.State;
@@ -49,14 +48,14 @@ public class TransitionMatcher {
 		return this;
 	}
 
-	public Transition to(Button button) {
+	public Transition to(State state) {
 		for (Transition t : transitions) {
-			if (t.getButton().equals(button)) {
+			if (t.getToState().equals(state)) {
 				return t;
 			}
 		}
 
-		throw new IllegalStateException("No transition exists from state: " + fromState + " for button : " + button);
+		throw new IllegalStateException("No transition exists from state: " + fromState + " to state: " + state);
 	}
 
 	public List<Transition> getTransitions() {

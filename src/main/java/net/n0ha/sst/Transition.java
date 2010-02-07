@@ -10,17 +10,14 @@ public class Transition {
 
 	private final State toState;
 
-	private final Button button;
-
 	private final Role role;
 
 	private List<Callback> callbacks;
 
-	public Transition(final State fromState, final State toState, final Button button, final Role role) {
+	public Transition(final State fromState, final State toState, final Role role) {
 		this.callbacks = new ArrayList<Callback>();
 		this.fromState = fromState;
 		this.toState = toState;
-		this.button = button;
 		this.role = role;
 
 		// default action
@@ -47,16 +44,12 @@ public class Transition {
 		return toState;
 	}
 
-	public Button getButton() {
-		return button;
-	}
-
 	public Role getRole() {
 		return role;
 	}
 
 	public String toString() {
-		return "[" + ClassUtils.getShortName(fromState.getClass()) + " --> " + ClassUtils.getShortName(toState.getClass()) + "]  [button: " + ClassUtils.getShortName(button.getClass()) + "]  ["
+		return "[" + ClassUtils.getShortName(fromState.getClass()) + " --> " + ClassUtils.getShortName(toState.getClass()) + "]"
 		        + getCallbacks().size() + " callbacks]";
 	}
 

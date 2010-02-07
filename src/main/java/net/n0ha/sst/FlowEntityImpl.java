@@ -12,18 +12,8 @@ public class FlowEntityImpl implements FlowEntity {
 
 	private Date created;
 
-	private String recordNote = "";
-
-	public String getRecordNote() {
-		return recordNote;
-	}
-
-	public void setRecordNote(String recordNote) {
-		this.recordNote = recordNote;
-	}
-
 	public FlowEntityImpl() {
-
+		// pass
 	}
 
 	public FlowEntityImpl(State state, User creatorUser) {

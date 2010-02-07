@@ -1,5 +1,13 @@
 package net.n0ha.sst.support;
 
+import static net.n0ha.sst.MockRole.APPROVER;
+import static net.n0ha.sst.MockRole.SYSTEM;
+import static net.n0ha.sst.MockRole.USER;
+import static net.n0ha.sst.MockState.APPROVED;
+import static net.n0ha.sst.MockState.NEW;
+import static net.n0ha.sst.MockState.PROCESSED;
+import static net.n0ha.sst.MockState.START;
+import static net.n0ha.sst.MockState.UNVERIFIED;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -9,10 +17,6 @@ import net.n0ha.sst.FlowEntity;
 import net.n0ha.sst.Transition;
 
 import org.mockito.Mock;
-
-import static net.n0ha.sst.MockButton.*;
-import static net.n0ha.sst.MockState.*;
-import static net.n0ha.sst.MockRole.*;
 
 public class TransitionMatcherTest extends UnitTestingSupport {
 
@@ -27,11 +31,11 @@ public class TransitionMatcherTest extends UnitTestingSupport {
 	public void setUp() throws Exception {
 		super.setUp();
 		transitions = new ArrayList<Transition>();
-		transitions.add(new Transition(START, NEW, SAVE, USER));
-		transitions.add(new Transition(START, APPROVED, APPROVE, APPROVER));
-		transitions.add(new Transition(NEW, PROCESSED, APPROVE, USER));
-		transitions.add(new Transition(START, PROCESSED, APPROVE, USER));
-		transitions.add(new Transition(START, UNVERIFIED, UNVERIFY, SYSTEM));
+		transitions.add(new Transition(START, NEW, USER));
+		transitions.add(new Transition(START, APPROVED, APPROVER));
+		transitions.add(new Transition(NEW, PROCESSED, USER));
+		transitions.add(new Transition(START, PROCESSED, USER));
+		transitions.add(new Transition(START, UNVERIFIED, SYSTEM));
 
 		// tests for state: START
 		when(entity.getState()).thenReturn(START);
@@ -72,23 +76,6 @@ public class TransitionMatcherTest extends UnitTestingSupport {
 		assertEquals(UNVERIFIED, ((Transition) filteredSystem.get(0)).getToState());
 	}
 
-	public void testButtonsFromStart() {
-		// for Start, there have to be Save and Approve
-		List<Transition> filtered = matcher.from(entity).getTransitions();
-
-		assertTrue(filtered.size() == 2);
-		assertTrue(((Transition) filtered.get(0)).getButton().equals(SAVE));
-		assertTrue(((Transition) filtered.get(1)).getButton().equals(APPROVE));
-
-		TransitionMatcher matcherApprover = new TransitionMatcher(transitions, APPROVER);
-
-		// for APPROVER for Start, there have to be Approved
-		List<Transition> filteredApprover = matcherApprover.from(entity).getTransitions();
-
-		assertTrue(filteredApprover.size() == 1);
-		assertTrue(((Transition) filteredApprover.get(0)).getButton().equals(APPROVE));
-	}
-
 	public void testFilteringFromNew() {
 		// for New, only Processed
 		when(entity.getState()).thenReturn(NEW);
@@ -96,15 +83,6 @@ public class TransitionMatcherTest extends UnitTestingSupport {
 
 		assertTrue(filtered.size() == 1);
 		assertTrue(((Transition) filtered.get(0)).getToState().equals(PROCESSED));
-	}
-
-	public void testButtonsFromNew() {
-		// for New, there have to be Approve
-		when(entity.getState()).thenReturn(NEW);
-		List<Transition> filtered = matcher.from(entity).getTransitions();
-
-		assertTrue(filtered.size() == 1);
-		assertTrue(((Transition) filtered.get(0)).getButton().equals(APPROVE));
 	}
 
 	public void testNullTransitionsThrowsException() throws Exception {

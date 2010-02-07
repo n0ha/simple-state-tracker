@@ -1,13 +1,12 @@
 package net.n0ha.sst.support;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.n0ha.sst.Button;
 import net.n0ha.sst.Callback;
 import net.n0ha.sst.ExecutionFailedException;
 import net.n0ha.sst.FlowEntity;
+import net.n0ha.sst.State;
 import net.n0ha.sst.Transition;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -26,9 +25,10 @@ public class TransitionExecutor implements ApplicationContextAware {
 
 	//private AuditLogDao auditLogDao;
 
+	/*
 	public List<Transition> canMoveTo() {
 		return transitions.getTransitions();
-	}
+	}*/
 
 	public TransitionExecutor() {
 		// springContext = new
@@ -41,12 +41,12 @@ public class TransitionExecutor implements ApplicationContextAware {
 		return this;
 	}
 
-	public boolean to(Button button) {
+	public boolean to(State state) {
 		if (transitions.isEmpty()) {
 			throw new IllegalStateException("Cannot execute transition, no possible path found");
 		}
 		sanitizeParams();
-		return execute(transitions.to(button));
+		return execute(transitions.to(state));
 	}
 
 	public void setMatcher(TransitionMatcher matcher) {
@@ -88,6 +88,7 @@ public class TransitionExecutor implements ApplicationContextAware {
 		this.springContext = springContext;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 

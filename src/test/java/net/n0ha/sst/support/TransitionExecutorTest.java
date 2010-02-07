@@ -1,6 +1,5 @@
 package net.n0ha.sst.support;
 
-import static net.n0ha.sst.MockButton.SAVE;
 import static net.n0ha.sst.MockRole.USER;
 import static net.n0ha.sst.MockState.NEW;
 import static net.n0ha.sst.MockState.START;
@@ -19,7 +18,6 @@ import net.n0ha.sst.Callback;
 import net.n0ha.sst.ExecutionFailedException;
 import net.n0ha.sst.FlowEntity;
 import net.n0ha.sst.FlowEntityImpl;
-import net.n0ha.sst.MockButton;
 import net.n0ha.sst.MockRole;
 import net.n0ha.sst.MockState;
 import net.n0ha.sst.Transition;
@@ -36,7 +34,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		te.setApplicationContext(unitTestContext);
 
 		// run the transition
-		assertTrue(te.to(SAVE));
+		assertTrue(te.to(NEW));
 
 		// state changed
 		assertEquals(NEW.getId(), request.getState().getId());
@@ -50,7 +48,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		te.setApplicationContext(unitTestContext);
 
 		// run the transition
-		assertTrue(te.withParams(null).to(SAVE));
+		assertTrue(te.withParams(null).to(NEW));
 
 		verify(mock).execute(isA(FlowEntity.class), isA(Map.class));
 	}
@@ -69,7 +67,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		te.setApplicationContext(unitTestContext);
 
 		// run the transition
-		assertTrue(te.to(SAVE));
+		assertTrue(te.to(NEW));
 
 		verify(mock).setExampleSpringService(isA(ExampleSpringService.class));
 	}
@@ -80,7 +78,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		Callback third = getCallback();
 
 		// insert callbacks in order
-		Transition t = new Transition(START, NEW, SAVE, USER);
+		Transition t = new Transition(START, NEW, USER);
 		t.addCallback(first);
 		t.addCallback(second);
 		t.addCallback(third);
@@ -88,7 +86,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
 		te.setApplicationContext(unitTestContext);
-		assertTrue(te.to(SAVE));
+		assertTrue(te.to(NEW));
 
 		// verify the order in which mocks were called
 		InOrder inOrder = inOrder(first, second, third);
@@ -111,14 +109,14 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		// and one standard callback..
 		Callback shouldNotBeExecuted = getCallback();
 
-		Transition t = new Transition(START, NEW, SAVE, USER);
+		Transition t = new Transition(START, NEW, USER);
 		t.addCallback(mock);
 		t.addCallback(shouldNotBeExecuted);
 
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
 		te.setApplicationContext(unitTestContext);
-		assertFalse(te.to(SAVE));
+		assertFalse(te.to(NEW));
 
 		// state should not change
 		assertEquals(START.getId(), request.getState().getId());
@@ -136,14 +134,14 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		// and one standard callback..
 		Callback shouldNotBeExecuted = getCallback();
 
-		Transition t = new Transition(START, NEW, SAVE, USER);
+		Transition t = new Transition(START, NEW, USER);
 		t.addCallback(mock);
 		t.addCallback(shouldNotBeExecuted);
 
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
 		te.setApplicationContext(unitTestContext);
-		assertFalse(te.to(SAVE));
+		assertFalse(te.to(NEW));
 
 		// state should not change
 		assertEquals(START.getId(), request.getState().getId());
@@ -161,7 +159,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		// and one standard callback..
 		Callback shouldNotBeExecuted = getCallback();
 
-		Transition t = new Transition(START, NEW, SAVE, USER);
+		Transition t = new Transition(START, NEW, USER);
 		t.addCallback(mock);
 		t.addCallback(shouldNotBeExecuted);
 
@@ -170,7 +168,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		te.setApplicationContext(unitTestContext);
 
 		try {
-			te.to(SAVE);
+			te.to(NEW);
 
 			// state should not change
 			assertEquals(START.getId(), request.getState().getId());
@@ -189,7 +187,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		TransitionExecutor te = getSimpleExecutor(mock);
 		te.setApplicationContext(unitTestContext);
 		try {
-			te.to(MockButton.APPROVE);
+			te.to(MockState.APPROVED);
 			fail("Non existant path must throw IllegalStateException");
 		} catch (IllegalStateException e) {
 			// pass
@@ -217,7 +215,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 
 	private TransitionExecutor getSimpleExecutor(Callback mockCallback) throws Exception {
 		// create transition
-		Transition t1 = new Transition(MockState.START, MockState.NEW, MockButton.SAVE, MockRole.USER);
+		Transition t1 = new Transition(MockState.START, MockState.NEW, MockRole.USER);
 		t1.addCallback(mockCallback);
 
 		// package it for TransitionExecutor
