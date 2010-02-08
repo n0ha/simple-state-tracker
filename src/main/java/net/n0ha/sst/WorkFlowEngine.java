@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.ExecutionFailedException;
 import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.model.Role;
 import net.n0ha.sst.model.State;

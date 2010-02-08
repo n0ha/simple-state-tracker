@@ -3,9 +3,9 @@ package net.n0ha.sst.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.n0ha.sst.ExecutionFailedException;
 import net.n0ha.sst.Transition;
 import net.n0ha.sst.model.Callback;
+import net.n0ha.sst.model.ExecutionFailedException;
 import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.model.State;
 
