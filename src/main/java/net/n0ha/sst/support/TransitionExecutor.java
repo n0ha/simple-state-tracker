@@ -9,19 +9,13 @@ import net.n0ha.sst.model.ExecutionFailedException;
 import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.model.State;
 
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public class TransitionExecutor implements ApplicationContextAware {
+public class TransitionExecutor {
 
 	private TransitionMatcher transitions;
 
 	private FlowEntity flowEntity;
 
 	private Map<String, Object> params;
-
-	private ApplicationContext springContext;
 
 	private Map<State, Callback> onEnterCallbacks;
 
@@ -62,9 +56,6 @@ public class TransitionExecutor implements ApplicationContextAware {
 	}
 
 	private boolean executeCallback(Callback c) {
-		// spring autowire & execute callback now
-		springContext.getAutowireCapableBeanFactory().autowireBeanProperties(c, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
-
 		try {
 			return c.execute(flowEntity, params);
 		} catch (ExecutionFailedException e) {
@@ -79,10 +70,6 @@ public class TransitionExecutor implements ApplicationContextAware {
 
 	public void setFlowEntity(FlowEntity flowEntity) {
 		this.flowEntity = flowEntity;
-	}
-
-	public void setApplicationContext(ApplicationContext springContext) {
-		this.springContext = springContext;
 	}
 
 	@Override

@@ -7,8 +7,6 @@ import net.n0ha.sst.model.Callback;
 import net.n0ha.sst.model.Role;
 import net.n0ha.sst.model.State;
 
-import org.springframework.util.ClassUtils;
-
 public class Transition {
 	private final State fromState;
 
@@ -53,8 +51,7 @@ public class Transition {
 	}
 
 	public String toString() {
-		return "[" + ClassUtils.getShortName(fromState.getClass()) + " --> " + ClassUtils.getShortName(toState.getClass()) + "]"
-		        + getCallbacks().size() + " callbacks]";
+		return "[" + fromState.getClass().getSimpleName() + " --> " + toState.getClass().getSimpleName() + "]" + getCallbacks().size() + " callbacks]";
 	}
 
 }

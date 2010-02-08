@@ -11,11 +11,8 @@ import net.n0ha.sst.model.Callback;
 import net.n0ha.sst.model.FlowEntity;
 
 import org.mockito.MockitoAnnotations;
-import org.springframework.context.support.StaticApplicationContext;
 
 public class UnitTestingSupport extends TestCase {
-
-	protected StaticApplicationContext unitTestContext;
 
 	@Override
 	public void setUp() throws Exception {
@@ -23,10 +20,6 @@ public class UnitTestingSupport extends TestCase {
 
 		// create all mocks
 		MockitoAnnotations.initMocks(this);
-
-		// create basic test spring context
-		unitTestContext = new StaticApplicationContext();
-		unitTestContext.registerSingleton("exampleBean", ExampleSpringServiceImpl.class);
 	}
 
 	protected Callback getCallback() throws Exception {

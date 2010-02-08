@@ -31,7 +31,6 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 	public void testCallbackIsExecutedAndStateChanged() throws Exception {
 		Callback mock = getCallback();
 		TransitionExecutor te = getSimpleExecutor(mock);
-		te.setApplicationContext(unitTestContext);
 
 		// run the transition
 		assertTrue(te.to(NEW));
@@ -45,31 +44,11 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 	public void testParamsAreSanitized() throws Exception {
 		Callback mock = getCallback();
 		TransitionExecutor te = getSimpleExecutor(mock);
-		te.setApplicationContext(unitTestContext);
 
 		// run the transition
 		assertTrue(te.withParams(null).to(NEW));
 
 		verify(mock).execute(isA(FlowEntity.class), isA(Map.class));
-	}
-
-	/**
-	 * This test depends on ApplicationContext in BaseTest to contain
-	 * ExampleSpringService instance.
-	 */
-	public void testCallbackIsConfiguredBySpring() throws Exception {
-		assertNotNull(unitTestContext.getBean("exampleBean"));
-
-		SpringConfiguredCallback mock = mock(SpringConfiguredCallback.class);
-		when(mock.execute(isA(FlowEntity.class), isA(Map.class))).thenReturn(true);
-
-		TransitionExecutor te = getSimpleExecutor(mock);
-		te.setApplicationContext(unitTestContext);
-
-		// run the transition
-		assertTrue(te.to(NEW));
-
-		verify(mock).setExampleSpringService(isA(ExampleSpringService.class));
 	}
 
 	public void testCallbacksAreExecutedInOrderOfInsertion() throws Exception {
@@ -85,7 +64,6 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
-		te.setApplicationContext(unitTestContext);
 		assertTrue(te.to(NEW));
 
 		// verify the order in which mocks were called
@@ -115,7 +93,6 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
-		te.setApplicationContext(unitTestContext);
 		assertFalse(te.to(NEW));
 
 		// state should not change
@@ -140,7 +117,6 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
-		te.setApplicationContext(unitTestContext);
 		assertFalse(te.to(NEW));
 
 		// state should not change
@@ -165,7 +141,6 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 
 		// run the transition
 		TransitionExecutor te = createExecutor(t);
-		te.setApplicationContext(unitTestContext);
 
 		try {
 			te.to(NEW);
@@ -185,7 +160,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 	public void testNonExistantPathThrowsException() throws Exception {
 		Callback mock = mock(Callback.class);
 		TransitionExecutor te = getSimpleExecutor(mock);
-		te.setApplicationContext(unitTestContext);
+
 		try {
 			te.to(MockState.APPROVED);
 			fail("Non existant path must throw IllegalStateException");
@@ -206,7 +181,6 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		request = new FlowEntityImpl();
 		request.setState(START);
 		te.setFlowEntity(request);
-		te.setApplicationContext(unitTestContext);
 
 		TransitionMatcher tm = new TransitionMatcher(transitionList, USER);
 		te.setMatcher(tm);

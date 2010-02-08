@@ -34,83 +34,9 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		when(request.getState()).thenReturn(START);
 	}
 
-	/*
-	 * public void testCorrectTransitionIsFoundForUser() throws Exception {
-	 * 
-	 * // configure the engine WorkFlowEngine wf = getInitializedEmptyFlow();
-	 * 
-	 * Transition t1 = new Transition(START, NEW, SAVE, USER); Transition t2 =
-	 * new Transition(START, NEW, APPROVE, APPROVER); wf.addTransition(t1);
-	 * wf.addTransition(t2); wf.addTransition(new Transition(NEW, PROCESSED,
-	 * APPROVE, USER));
-	 * 
-	 * // choose transitions List<Transition> transitions =
-	 * wf.entity(request).canMoveTo();
-	 * 
-	 * // only one transition must be chosen assertEquals(1,
-	 * transitions.size());
-	 * 
-	 * // the one from Start to New assertEquals(t1, transitions.get(0));
-	 * 
-	 * // button for transition assertEquals(SAVE,
-	 * transitions.get(0).getButton());
-	 * 
-	 * // button from workflow buttons
-	 * assertEquals(wf.getButtons(request).get(0),
-	 * transitions.get(0).getButton());
-	 * 
-	 * // temporarily current role is changed to APPROVER List<Transition>
-	 * transitionsAsApprover = wf.entity(request, APPROVER).canMoveTo();
-	 * 
-	 * // only one transition must be chosen assertEquals(1,
-	 * transitionsAsApprover.size());
-	 * 
-	 * // the one from Start to New as APPROVER assertEquals(t2,
-	 * transitionsAsApprover.get(0));
-	 * 
-	 * // button from workflow buttons should not change assertEquals(SAVE,
-	 * wf.getButtons(request).get(0));
-	 * 
-	 * List<Transition> transitionsAfter = wf.entity(request).canMoveTo();
-	 * 
-	 * // the one from Start to New assertEquals(t1, transitionsAfter.get(0)); }
-	 */
-
-	/*
-	 * public void testCorrectTransitionIsFoundForApprover() throws Exception {
-	 * 
-	 * // configure the engine WorkFlowEngine wf = getBasicFlowForApprover();
-	 * 
-	 * Transition t1 = new Transition(START, NEW, SAVE, USER); Transition t2 =
-	 * new Transition(START, NEW, APPROVE, APPROVER); wf.addTransition(t1);
-	 * wf.addTransition(t2); wf.addTransition(new Transition(START, PROCESSED,
-	 * SAVE, APPROVER));
-	 * 
-	 * // choose transitions List<Transition> transitions =
-	 * wf.entity(request).canMoveTo();
-	 * 
-	 * // 2 transitions must be chosen assertEquals(2, transitions.size());
-	 * 
-	 * // the one from Start to New assertEquals(t2, transitions.get(0));
-	 * 
-	 * // button for transition assertEquals(APPROVE,
-	 * transitions.get(0).getButton()); assertEquals(SAVE,
-	 * transitions.get(1).getButton());
-	 * 
-	 * // 2 buttons must be chosen assertEquals(2,
-	 * wf.getButtons(request).size());
-	 * 
-	 * // button from workflow buttons
-	 * assertEquals(wf.getButtons(request).get(0),
-	 * transitions.get(0).getButton());
-	 * assertEquals(wf.getButtons(request).get(1),
-	 * transitions.get(1).getButton()); }
-	 */
-
 	public void testNonExistantPathThrowsException() throws Exception {
 		// configure the engine
 		WorkFlowEngine wf = getInitializedEmptyFlow();
-		wf.setApplicationContext(unitTestContext);
 		Transition t1 = new Transition(START, NEW, USER);
 		Transition t2 = new Transition(START, CANCELLED, APPROVER);
 		wf.addTransition(t1);
@@ -127,7 +53,6 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 	public void testNonExistantPathForTemporaryRoleThrowsException() throws Exception {
 		// configure the engine
 		WorkFlowEngine wf = getInitializedEmptyFlow();
-		wf.setApplicationContext(unitTestContext);
 		Transition t1 = new Transition(START, NEW, USER);
 		Transition t2 = new Transition(START, CANCELLED, APPROVER);
 		wf.addTransition(t1);
@@ -163,7 +88,6 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 
 		// configure flow
 		WorkFlowEngine flow = getInitializedEmptyFlow();
-		flow.setApplicationContext(unitTestContext);
 		flow.addTransition(new Transition(START, NEW, USER));
 		flow.whenMovesFrom(request).to(NEW).thenExecute(mock);
 
@@ -187,7 +111,6 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		subflow.addTransition(new Transition(MockState.APPROVED, MockState.CANCELLED, MockRole.USER));
 
 		WorkFlowEngine flow = getInitializedEmptyFlow();
-		flow.setApplicationContext(unitTestContext);
 		flow.addTransition(new Transition(MockState.START, MockState.NEW, MockRole.USER));
 		flow.importSubFlow(subflow, MockState.NEW, MockRole.USER);
 
@@ -220,7 +143,6 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 
 	public void testRecursionFromCallback() throws Exception {
 		final WorkFlowEngine flow = getInitializedEmptyFlow();
-		flow.setApplicationContext(unitTestContext);
 		flow.addTransition(new Transition(MockState.START, MockState.APPROVED, MockRole.SYSTEM));
 		Transition t = new Transition(MockState.START, MockState.NEW, MockRole.USER);
 		t.addCallback(new Callback() {
@@ -241,7 +163,6 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		when(roleMapper.getRole(request)).thenReturn(USER);
 		WorkFlowEngine wf = new WorkFlowEngine();
 		wf.setMapper(roleMapper);
-		wf.setApplicationContext(unitTestContext);
 
 		return wf;
 	}
@@ -250,7 +171,6 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		when(roleMapper.getRole(request)).thenReturn(APPROVER);
 		WorkFlowEngine wf = new WorkFlowEngine();
 		wf.setMapper(roleMapper);
-		wf.setApplicationContext(unitTestContext);
 
 		return wf;
 	}

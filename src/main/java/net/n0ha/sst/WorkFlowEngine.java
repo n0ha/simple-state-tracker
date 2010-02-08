@@ -14,18 +14,13 @@ import net.n0ha.sst.support.TransitionExecutor;
 import net.n0ha.sst.support.TransitionMatcher;
 import net.n0ha.sst.support.UserToRoleMapper;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public class WorkFlowEngine implements ApplicationContextAware {
+public class WorkFlowEngine {
 
 	private List<Transition> transitions;
 
 	private Map<State, DecisionCallback> onSubmitCallbacks;
 
 	private Map<State, Callback> onEnterCallbacks;
-
-	private ApplicationContext springContext;
 
 	private UserToRoleMapper mapper;
 
@@ -45,7 +40,6 @@ public class WorkFlowEngine implements ApplicationContextAware {
 		TransitionExecutor executor = new TransitionExecutor();
 		executor.setMatcher(getMatcher(entity).from(entity));
 		executor.setFlowEntity(entity);
-		executor.setApplicationContext(springContext);
 		executor.setOnEnterCallbacks(onEnterCallbacks);
 
 		return executor;
@@ -59,7 +53,6 @@ public class WorkFlowEngine implements ApplicationContextAware {
 		TransitionExecutor executor = new TransitionExecutor();
 		executor.setMatcher(getMatcher(entity).from(entity, role));
 		executor.setFlowEntity(entity);
-		executor.setApplicationContext(springContext);
 		executor.setOnEnterCallbacks(onEnterCallbacks);
 
 		return executor;
@@ -117,10 +110,6 @@ public class WorkFlowEngine implements ApplicationContextAware {
 		}
 
 		return result;
-	}
-
-	public void setApplicationContext(ApplicationContext springContext) {
-		this.springContext = springContext;
 	}
 
 	public void setMapper(UserToRoleMapper mapper) {
