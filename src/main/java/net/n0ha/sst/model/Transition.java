@@ -1,11 +1,9 @@
-package net.n0ha.sst;
+package net.n0ha.sst.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.n0ha.sst.model.Callback;
-import net.n0ha.sst.model.Role;
-import net.n0ha.sst.model.State;
+import net.n0ha.sst.DefaultCallback;
 
 public class Transition {
 	private final State fromState;

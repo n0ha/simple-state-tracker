@@ -3,10 +3,10 @@ package net.n0ha.sst.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.n0ha.sst.Transition;
 import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.model.Role;
 import net.n0ha.sst.model.State;
+import net.n0ha.sst.model.Transition;
 
 public class TransitionMatcher {
 

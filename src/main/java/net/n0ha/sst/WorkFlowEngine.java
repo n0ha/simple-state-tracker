@@ -10,6 +10,7 @@ import net.n0ha.sst.model.ExecutionFailedException;
 import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.model.Role;
 import net.n0ha.sst.model.State;
+import net.n0ha.sst.model.Transition;
 import net.n0ha.sst.support.TransitionExecutor;
 import net.n0ha.sst.support.TransitionMatcher;
 import net.n0ha.sst.support.UserToRoleMapper;

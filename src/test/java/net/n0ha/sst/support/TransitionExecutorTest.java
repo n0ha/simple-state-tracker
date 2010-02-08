@@ -16,11 +16,11 @@ import java.util.Map;
 
 import net.n0ha.sst.MockRole;
 import net.n0ha.sst.MockState;
-import net.n0ha.sst.Transition;
 import net.n0ha.sst.model.Callback;
 import net.n0ha.sst.model.ExecutionFailedException;
 import net.n0ha.sst.model.FlowEntity;
 import net.n0ha.sst.model.FlowEntityImpl;
+import net.n0ha.sst.model.Transition;
 
 import org.mockito.InOrder;
 
