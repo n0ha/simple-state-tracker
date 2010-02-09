@@ -154,6 +154,15 @@ public class WorkFlowEngine {
 				} catch (ExecutionFailedException e) {
 					// pass
 				}
+			} else {
+				// find single next possible state
+				List<Transition> possibleTransitions = getMatcher(request).from(request).getTransitions();
+				if (possibleTransitions.size() == 1) {
+					System.out.println("making automatic transition");
+
+					State nextState = possibleTransitions.get(0).getToState();
+					entity(request).withParams(params).to(nextState);
+				}
 			}
 		}
 	}
