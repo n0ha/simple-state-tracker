@@ -60,11 +60,13 @@ public class TransitionExecutor {
 			return c.execute(flowEntity, params);
 		} catch (ExecutionFailedException e) {
 			System.out.println("Catched ExecutionFailedException, won't execute other callbacks..");
+			e.printStackTrace();
 			return false;
 		}
 	}
 
 	private void sanitizeParams() {
+		System.out.println("params are null");
 		params = (params == null) ? new HashMap<String, Object>() : params;
 	}
 

@@ -49,7 +49,7 @@ public class Transition {
 	}
 
 	public String toString() {
-		return "[" + fromState.getClass().getSimpleName() + " --> " + toState.getClass().getSimpleName() + "]" + getCallbacks().size() + " callbacks]";
+		return "[" + fromState.getClass().getName() + " --> " + toState.getClass().getName() + "]" + getCallbacks().size() + " callbacks]";
 	}
 
 }

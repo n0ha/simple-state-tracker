@@ -25,7 +25,7 @@ public class WorkFlowEngine {
 
 	private UserToRoleMapper mapper;
 
-	private State initialState;
+	private State startState;
 
 	public WorkFlowEngine() {
 		transitions = new ArrayList<Transition>();
@@ -70,13 +70,13 @@ public class WorkFlowEngine {
 
 	public void addTransition(Transition transition) {
 		if (transitions.size() == 0) {
-			initialState = transition.getFromState();
+			startState = transition.getFromState();
 		}
 		transitions.add(transition);
 	}
 
-	public State getInitialState() {
-		return initialState;
+	public State getStartState() {
+		return startState;
 	}
 
 	private List<Transition> getTransitions() {
@@ -85,7 +85,7 @@ public class WorkFlowEngine {
 
 	public void importSubFlow(WorkFlowEngine subFlow, State connectTo, Role role) {
 		// first, connect the subflows' initial state to our state
-		State subFlowInitialState = subFlow.getInitialState();
+		State subFlowInitialState = subFlow.getStartState();
 		this.addTransition(new Transition(connectTo, subFlowInitialState, role));
 
 		// now, copy over all subflow transitions
@@ -125,13 +125,35 @@ public class WorkFlowEngine {
 		onEnterCallbacks.put(state, callback);
 	}
 
+	/**
+	 * Submit FlowEntity model object.
+	 * 
+	 * @param request
+	 * @param params
+	 */
 	public void submit(FlowEntity request, Map<String, Object> params) {
-		if (onSubmitCallbacks.containsKey(request.getState())) {
-			try {
-				State state = onSubmitCallbacks.get(request.getState()).next(request, params);
-				entity(request).to(state);
-			} catch (ExecutionFailedException e) {
-				// pass
+		if (request.getState() == null) {
+			System.out.println("submit noveho requestu");
+			request.setState(getStartState());
+
+			System.out.println("request: " + request.getState().toString());
+
+			// TODO this is also in TransitionExecutor, merge it somehow
+			if (onEnterCallbacks.containsKey(request.getState())) {
+				try {
+					onEnterCallbacks.get(request.getState()).execute(request, params);
+				} catch (ExecutionFailedException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			if (onSubmitCallbacks.containsKey(request.getState())) {
+				try {
+					State state = onSubmitCallbacks.get(request.getState()).next(request, params);
+					entity(request).withParams(params).to(state);
+				} catch (ExecutionFailedException e) {
+					// pass
+				}
 			}
 		}
 	}

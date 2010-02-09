@@ -5,6 +5,4 @@ public interface State {
 	long getId();
 
 	String getName();
-	
-	boolean isFinalState();
 }
