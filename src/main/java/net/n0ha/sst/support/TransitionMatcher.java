@@ -66,6 +66,7 @@ public class TransitionMatcher {
 		return (transitions.size() == 0);
 	}
 
+	@Override
 	public String toString() {
 		return transitions.toString();
 	}

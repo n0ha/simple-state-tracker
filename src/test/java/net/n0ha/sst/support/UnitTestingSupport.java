@@ -22,6 +22,7 @@ public class UnitTestingSupport extends TestCase {
 		MockitoAnnotations.initMocks(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Callback getCallback() throws Exception {
 		Callback mock = mock(Callback.class);
 		when(mock.execute(isA(FlowEntity.class), isA(Map.class))).thenReturn(true);

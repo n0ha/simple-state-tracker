@@ -28,11 +28,12 @@ public class DefaultCallback implements Callback {
 
 		System.out.print("transition of entity [" + entity + "] ");
 		System.out.print("with params [" + params + "] ");
-		System.out.println("from [" + fromState.getName() + "] to [" + toState.getName() + "]");
+		System.out.println("from [" + fromState.name() + "] to [" + toState.name() + "]");
 
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		return "default callback";
 	}

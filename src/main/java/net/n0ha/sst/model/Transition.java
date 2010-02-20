@@ -48,6 +48,7 @@ public class Transition {
 		return role;
 	}
 
+	@Override
 	public String toString() {
 		return "[" + fromState.getClass().getName() + " --> " + toState.getClass().getName() + "]" + getCallbacks().size() + " callbacks]";
 	}

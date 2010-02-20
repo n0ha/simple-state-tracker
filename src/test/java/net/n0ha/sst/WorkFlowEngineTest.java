@@ -84,6 +84,7 @@ public class WorkFlowEngineTest extends UnitTestingSupport {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testCallbackIsExecuted() throws Exception {
 		Callback mock = getCallback();
 

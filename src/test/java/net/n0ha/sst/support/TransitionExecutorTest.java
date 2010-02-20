@@ -28,6 +28,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 
 	private FlowEntity request;
 
+	@SuppressWarnings("unchecked")
 	public void testCallbackIsExecutedAndStateChanged() throws Exception {
 		Callback mock = getCallback();
 		TransitionExecutor te = getSimpleExecutor(mock);
@@ -36,11 +37,12 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		assertTrue(te.to(NEW));
 
 		// state changed
-		assertEquals(NEW.getId(), request.getState().getId());
+		assertEquals(NEW, request.getState());
 
 		verify(mock).execute(isA(FlowEntity.class), isA(Map.class));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testParamsAreSanitized() throws Exception {
 		Callback mock = getCallback();
 		TransitionExecutor te = getSimpleExecutor(mock);
@@ -51,6 +53,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		verify(mock).execute(isA(FlowEntity.class), isA(Map.class));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testCallbacksAreExecutedInOrderOfInsertion() throws Exception {
 		Callback first = getCallback();
 		Callback second = getCallback();
@@ -78,6 +81,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		assertFalse(second.equals(third));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testFalseReturnValueStopsExecution() throws Exception {
 		// create callback that returns false, and thus prevents other callbacks
 		// from being executed
@@ -96,12 +100,13 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		assertFalse(te.to(NEW));
 
 		// state should not change
-		assertEquals(START.getId(), request.getState().getId());
+		assertEquals(START, request.getState());
 
 		verify(mock).execute(isA(FlowEntity.class), isA(Map.class));
 		verifyZeroInteractions(shouldNotBeExecuted);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testExecutionFailedExceptionStopsExecution() throws Exception {
 		// create callback that throws exception, and thus prevents other
 		// callbacks from being executed
@@ -120,12 +125,13 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 		assertFalse(te.to(NEW));
 
 		// state should not change
-		assertEquals(START.getId(), request.getState().getId());
+		assertEquals(START, request.getState());
 
 		verify(mock).execute(isA(FlowEntity.class), isA(Map.class));
 		verifyZeroInteractions(shouldNotBeExecuted);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testRuntimeExceptionIsPropagatedAndStopsExecution() throws Exception {
 		// create callback that throws runtime exception, and thus prevents
 		// other callbacks from being executed
@@ -146,7 +152,7 @@ public class TransitionExecutorTest extends UnitTestingSupport {
 			te.to(NEW);
 
 			// state should not change
-			assertEquals(START.getId(), request.getState().getId());
+			assertEquals(START, request.getState());
 
 			fail("Must not swallow RuntimeException");
 		} catch (RuntimeException e) {
